@@ -1,4 +1,5 @@
-from urllib import urlopen
+import requests
+
 from scrapely import HtmlPage, Scraper, TemplateMaker, best_match, InstanceBasedLearningExtractor
 from lxml.html import tostring
 from scrapely.extraction.regionextract import (RecordExtractor, BasicTypeExtractor, TemplatePageExtractor, \
@@ -96,8 +97,8 @@ class Depta(object):
         extract data field from raw html or from a url.
         """
         if not html and 'url' in kwargs:
-            info = urlopen(kwargs.pop('url'))
-            _, html = html_to_unicode(info.headers.get('content_type'), info.read())
+            r = requests.get(kwargs.pop('url'))
+            _, html = html_to_unicode(r.headers.get('content-type'), r.content)
 
         builder = DomTreeBuilder(html)
         root = builder.build()
