@@ -1,0 +1,10 @@
+graft pydepta/tests/resources/
+
+include *.rst
+include pydepta/*.c
+include pydepta/*.pyx
+
+include LICENSE
+
+global-exclude __pycache__ *.py[cod]
+global-exclude *.so *.dylib
