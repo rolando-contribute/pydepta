@@ -75,8 +75,8 @@ class SimpleTreeMatch(object):
         match two trees list.
         """
         matrix = create_2d_matrix(len(l1) + 1, len(l2) + 1)
-        for i in xrange(1, len(matrix)):
-            for j in xrange(1, len(matrix[0])):
+        for i in range(1, len(matrix)):
+            for j in range(1, len(matrix[0])):
                 matrix[i][j] = max(matrix[i][j - 1], matrix[i - 1][j])
                 matrix[i][j] = max(matrix[i][j], matrix[i - 1][j - 1] + self._single_match(l1[i - 1], l2[j - 1]))
         return matrix[i][j]
@@ -151,8 +151,8 @@ class SimpleTreeAligner(object):
         alignment_matrix = create_2d_matrix(len(l1), len(l2))
         trace = create_2d_matrix(len(l1), len(l2))
 
-        for i in xrange(1, len(matrix)):
-            for j in xrange(1, len(matrix[0])):
+        for i in range(1, len(matrix)):
+            for j in range(1, len(matrix[0])):
                 if matrix[i][j-1] > matrix[i-1][j]:
                     matrix[i][j] = matrix[i][j-1]
                     trace[i-1][j-1] = TreeAlignment.TRACE_LEFT
@@ -262,8 +262,8 @@ class SimpleTreeAligner(object):
         alignment_matrix = create_2d_matrix(t1_len, t2_len)
         trace = create_2d_matrix(t1_len, t2_len)
 
-        for i in xrange(1, len(matrix)):
-            for j in xrange(1, len(matrix[0])):
+        for i in range(1, len(matrix)):
+            for j in range(1, len(matrix[0])):
                 if matrix[i][j - 1] > matrix[i - 1][j]:
                     matrix[i][j] = matrix[i][j - 1]
                     trace[i - 1][j - 1] = TreeAlignment.TRACE_LEFT
@@ -392,7 +392,7 @@ class PartialTreeAligner(object):
             aligned.update({sub.first: sub.second})
 
         # add reverse mapping too
-        reverse_aligned = dict(reversed(i) for i in aligned.items())
+        reverse_aligned = dict(reversed(i) for i in list(aligned.items()))
 
         modified = False
 
@@ -456,7 +456,7 @@ class PartialTreeAligner(object):
         >>> [[e.tag for e in l] for l in unaligned]
         [['h3', 'h4'], ['h6']]
         """
-        predicate = lambda x: x not in aligned.values()
+        predicate = lambda x: x not in list(aligned.values())
         unaligned = []
 
         for element in elements:

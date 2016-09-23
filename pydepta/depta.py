@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import requests
 
 from scrapely import HtmlPage, Scraper, TemplateMaker, best_match, InstanceBasedLearningExtractor
@@ -114,9 +116,9 @@ class Depta(object):
             items, _ = field_finder.align_records(records)
             region.items = items
             if 'verbose' in kwargs:
-                print region
+                print(region)
                 for record in records:
-                    print '\t', record
+                    print('\t', record)
 
         return regions
 
@@ -128,13 +130,13 @@ class Depta(object):
         htmlpage = self._region_to_htmlpage(seed)
         dtm = DeptaTemplateMaker(htmlpage)
         if isinstance(data, dict):
-            data = data.items()
+            data = list(data.items())
 
         for field, values in data:
             if not hasattr(values, '__iter__'):
                 values = [values]
             for value in values:
-                if isinstance(value, str):
+                if isinstance(value, bytes):
                     value = value.decode(htmlpage.encoding or 'utf-8')
                 dtm.annotate(field, best_match(value))
         self.scraper.add_template(dtm.get_template())
@@ -150,7 +152,7 @@ class Depta(object):
 
         builder = DomTreeBuilder(html)
         doc = builder.build()
-        page = HtmlPage(body=tostring(doc, encoding=unicode, method='html'))
+        page = HtmlPage(body=tostring(doc, encoding='unicode', method='html'))
 
         return self._scrape_page(page)
 
@@ -161,5 +163,5 @@ class Depta(object):
         return self.scraper._ex.extract(page)[0]
 
     def _region_to_htmlpage(self, region):
-        seed_body = tostring(region.parent[region.start], encoding=unicode, method='html')
+        seed_body = tostring(region.parent[region.start], encoding='unicode', method='html')
         return HtmlPage(body=seed_body)
